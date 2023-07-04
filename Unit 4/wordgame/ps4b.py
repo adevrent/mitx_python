@@ -124,16 +124,45 @@ def playGame(wordList):
 
     wordList: list (string)
     """
+    hand = None
     while True:
-        user_input = input("Enter n to deal a new hand, r to replay the last hand, or e to end game:")
+        user_input = input("Enter n to deal a new hand, r to replay the last hand, or e to end game: ")
+        if user_input not in ("e", "n", "r"):
+            print("Invalid command.")
+        elif user_input == "e":
+            break
+        elif user_input == "n":
+            comp_or_user = input("Enter u to have yourself play, c to have the computer play:")
+            while comp_or_user not in ("u", "c"):
+                print("Invalid command.")
+                comp_or_user = input("Enter u to have yourself play, c to have the computer play:")
+            if comp_or_user == "u":
+                hand = dealHand(HAND_SIZE)
+                playHand(hand, wordList, HAND_SIZE)
+            elif comp_or_user == "c":
+                hand = dealHand(HAND_SIZE)
+                compPlayHand(hand, wordList, HAND_SIZE)
+                
+        elif user_input == "r":
+            while user_input == "r" and hand == None:
+                print("You have not played a hand yet. Please play a new hand first!")
+                user_input = input("Enter n to deal a new hand, r to replay the last hand, or e to end game: ")
+            if user_input == "e":
+                break
+            comp_or_user = input("Enter u to have yourself play, c to have the computer play:")
+            while comp_or_user not in ("u", "c"):
+                print("Invalid command.")
+                comp_or_user = input("Enter u to have yourself play, c to have the computer play:")
+            if comp_or_user == "u":
+                playHand(hand, wordList, HAND_SIZE)
+            elif comp_or_user == "c":
+                compPlayHand(hand, wordList, HAND_SIZE)
             
-    
-    print("playGame not yet implemented.") # <-- Remove this when you code this function
-
-        
 #
 # Build data structures used for entire session and play game
 #
 if __name__ == '__main__':
     wordList = loadWords()
     playGame(wordList)
+
+playGame(wordList)
