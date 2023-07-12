@@ -247,14 +247,8 @@ class CiphertextMessage(Message):
         #print(validword_dict)
         
         return (s_key, self.apply_shift(s_key))
-    
-
-def decrypt_story():
-    story = CiphertextMessage(get_story_string())
-    return story.decrypt_message()
-    
 
 #Example test case (CiphertextMessage)
-#ciphertext = CiphertextMessage('jgnnq')
-#print('Expected Output:', (24, 'hello'))
-#print('Actual Output:', ciphertext.decrypt_message())
+ciphertext = CiphertextMessage('jgnnq')
+print('Expected Output:', (24, 'hello'))
+print('Actual Output:', ciphertext.decrypt_message())
