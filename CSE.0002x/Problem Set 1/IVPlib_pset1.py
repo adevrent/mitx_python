@@ -1,7 +1,7 @@
 ################################################################################
 # CSE.0002x
 # Problem Set 1: IVPlib_pset1
-# Name:
+# Name: Atakan Devrent
 
 """
 This Python library is useful in solving Initial Value Problems (IVP).
@@ -130,7 +130,11 @@ def step_RK4(thisIVP, dt, un, tn):
         float list: next state, i.e. u(tn+dt)
     """
     #### BEGIN SOLUTION ####
-    raise NotImplementedError("Implement step_RK4")
+    a = []
+    fa = thisIVP.evalf(un ,tn)  # calculating f(un, tn) for a.
+    for i in range(len(un)):
+        a.append(dt*fa[i])
+        
     #### END SOLUTION ####
 
 
@@ -166,5 +170,15 @@ def solve(thisIVP, dt, method):
 
     # Loop from t=tI to t>=tF
     #### BEGIN SOLUTION #####
-    raise NotImplementedError("Solve an IVP and output the t and u history")
+    tn = tI
+    un = uI
+    tF = thisIVP.get_tF()
+    while tn <= tF:
+        un = method(thisIVP, dt, un, tn)
+        u.append(un)
+        tn += dt
+        t.append(tn)
+    
+    return t, u
+        
     #### END SOLUTION ####
