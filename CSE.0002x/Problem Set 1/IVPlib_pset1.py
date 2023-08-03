@@ -132,9 +132,45 @@ def step_RK4(thisIVP, dt, un, tn):
     #### BEGIN SOLUTION ####
     a = []
     fa = thisIVP.evalf(un ,tn)  # calculating f(un, tn) for a.
-    for i in range(len(un)):
+    if len(fa) != len(un):
+        raise ValueError("Something went terribly wrong.")
+    for i in range(len(fa)):
         a.append(dt*fa[i])
-        
+    
+    b = []
+    un_a_div_2 = []
+    for i in range(len(a)):
+        un_a_div_2.append(un[i] + a[i]/2)
+    fb = thisIVP.evalf(un_a_div_2, (tn + dt/2))
+    if len(fb) != len(un):
+        raise ValueError("Something went terribly wrong.")
+    for i in range(len(fb)):
+        b.append(dt*fb[i])
+    
+    c = []
+    un_b_div_2 = []
+    for i in range(len(b)):
+        un_b_div_2.append(un[i] + b[i]/2)
+    fc = thisIVP.evalf(un_b_div_2, (tn + dt/2))
+    if len(fc) != len(un):
+        raise ValueError("Something went terribly wrong.")
+    for i in range(len(fc)):
+        c.append(dt*fc[i])
+    
+    d = []
+    un_c = []
+    for i in range(len(c)):
+        un_c.append(un[i] + c[i])
+    fd = thisIVP.evalf(un_c, (tn + dt))
+    if len(fd) != len(un):
+        raise ValueError("Something went terribly wrong.")
+    for i in range(len(fd)):
+        d.append(dt*fd[i])
+    
+    un1 = []
+    for i in range(len(un)):
+        un1.append(un[i] + (1/6)*(a[i] + 2*b[i] + 2*c[i] + d[i]))
+    return un1
     #### END SOLUTION ####
 
 
