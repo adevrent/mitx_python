@@ -31,7 +31,35 @@ class HailIVP(IVP):
         """
         #### BEGIN SOLUTION ####
         #### REMEMBER: use self.get_p to get values of any parameters needed
-        raise NotImplementedError("Implement evalf for HailIVP")
+        
+        # Assign values of V and z.
+        V = u[0]
+        z = u[1]
+        
+        # get parameter values
+        rhoa = self.get_p["rhoa"] # kg/m^3
+        rhop = self.get_p["rhop"] # kg/m^3
+        dp = self.get_p["dp"] # m
+        CD = self.get_p["CD"]
+        g = self.get_p["g"] # m/s^2
+        
+        # calculate mass
+        m = (math.pi/6) * rhop * dp**3
+        
+        # calculate cross-sectional area of the hail
+        Ap = (math.pi/4) * dp**2
+        
+        # calculate D (drag force) as a function of V.
+        D = 0.5 * rhoa * V**2 * Ap * CD
+        
+        # calculate f(V, z) = (dV/dt, dz/dt)
+        f = []
+        dV_dt = g - (D/m)  # calculate dV/dt
+        dz_dt = -V  # calculate dz/dt
+        f.append(dV_dt)
+        f.append(dz_dt)
+        return f
+        
         #### END SOLUTION ####
 
 
@@ -54,7 +82,36 @@ def hail_Verror(hail_IVP, t, V):
         Vex (float list): exact (analytic solution) velocity values, Vex[n]
     """
     #### BEGIN SOLUTION ####
-    raise NotImplementedError("Calculate error between exact and numerical solutions of hail velocity")
+    # get parameter values
+    rhoa = hail_IVP.get_p["rhoa"] # kg/m^3
+    rhop = hail_IVP.get_p["rhop"] # kg/m^3
+    dp = hail_IVP.get_p["dp"] # m
+    CD = hail_IVP.get_p["CD"]
+    g = hail_IVP.get_p["g"] # m/s^2
+    
+    # calculate mass
+    m = (math.pi/6) * rhop * dp**3
+    
+    # calculate cross-sectional area of the hail
+    Ap = (math.pi/4) * dp**2
+    
+    # calculate Vterm (terminal velocity)
+    Vterm = (2*m*g)/(rhoa * Ap * CD)
+    
+    # calculate Vex (exact velocity from analytic method)
+    Vex = []
+    C = 0  # C = 0, if V[0] = 0. Assume V[0] = 0.
+    for velocity in V:
+        Vex.append(Vterm * math.tanh((g*t)/Vterm + C))
+    
+    # calculate error: e[n] = abs(V[n]-Vex[n])
+    if len(V) != len(Vex):
+        raise ValueError("Something went terribly wrong.")
+    e = []
+    for i in range(len(V)):
+        e.append(abs(V[i] - Vex[i]))
+    
+    return e, Vex
     #### END SOLUTION ####
 
 
