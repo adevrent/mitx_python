@@ -1,7 +1,7 @@
 ################################################################################
 # CSE.0002x
 # Problem Set 1: hail
-# Name:
+# Name: Atakan Devrent
 
 import math
 import matplotlib.pyplot as plt
@@ -37,11 +37,11 @@ class HailIVP(IVP):
         z = u[1]
         
         # get parameter values
-        rhoa = self.get_p["rhoa"] # kg/m^3
-        rhop = self.get_p["rhop"] # kg/m^3
-        dp = self.get_p["dp"] # m
-        CD = self.get_p["CD"]
-        g = self.get_p["g"] # m/s^2
+        rhoa = self.get_p("rhoa") # kg/m^3
+        rhop = self.get_p("rhop") # kg/m^3
+        dp = self.get_p("dp") # m
+        CD = self.get_p("CD")
+        g = self.get_p("g") # m/s^2
         
         # calculate mass
         m = (math.pi/6) * rhop * dp**3
@@ -83,11 +83,11 @@ def hail_Verror(hail_IVP, t, V):
     """
     #### BEGIN SOLUTION ####
     # get parameter values
-    rhoa = hail_IVP.get_p["rhoa"] # kg/m^3
-    rhop = hail_IVP.get_p["rhop"] # kg/m^3
-    dp = hail_IVP.get_p["dp"] # m
-    CD = hail_IVP.get_p["CD"]
-    g = hail_IVP.get_p["g"] # m/s^2
+    rhoa = hail_IVP.get_p("rhoa") # kg/m^3
+    rhop = hail_IVP.get_p("rhop") # kg/m^3
+    dp = hail_IVP.get_p("dp") # m
+    CD = hail_IVP.get_p("CD")  # constant
+    g = hail_IVP.get_p("g") # m/s^2
     
     # calculate mass
     m = (math.pi/6) * rhop * dp**3
@@ -96,13 +96,15 @@ def hail_Verror(hail_IVP, t, V):
     Ap = (math.pi/4) * dp**2
     
     # calculate Vterm (terminal velocity)
-    Vterm = (2*m*g)/(rhoa * Ap * CD)
+    Vterm = ((2*m*g)/(rhoa * Ap * CD)) ** 0.5
     
     # calculate Vex (exact velocity from analytic method)
     Vex = []
     C = 0  # C = 0, if V[0] = 0. Assume V[0] = 0.
-    for velocity in V:
-        Vex.append(Vterm * math.tanh((g*t)/Vterm + C))
+    if len(V) != len(t):
+        raise ValueError("Something went terribly wrong.")
+    for i in range(len(t)):
+        Vex.append(Vterm * math.tanh((g*t[i])/Vterm + C))
     
     # calculate error: e[n] = abs(V[n]-Vex[n])
     if len(V) != len(Vex):
@@ -133,7 +135,24 @@ def hail_Veplot(t, V, Vex, e, method='numerical'):
         axs (array of Axes): handle to the Axes objects that comprise the figure's subplots
     """
     #### BEGIN SOLUTION ####
-    raise NotImplementedError("Implement hail_Veplot")
+    
+    # create a subplots instance, 2 rows 1 col.
+    fig, axs = plt.subplots(2, 1, sharex=True)
+    
+    # plot exact velocity and velocity from numerical method step_FE against time
+    axs[0].plot(t, Vex, color = "r", label = "exact")  # exact velocity from analytical method.
+    axs[0].set_ylabel("$V$ (m/s)")
+    axs[0].plot(t, V, color = "blue", marker = "o", label = str(method), linestyle = "None")  # velocity from numerical method
+    axs[0].set_ylabel("V (m/s)")
+    axs[0].legend(loc = "lower right")
+    
+    axs[1].plot(t, e, color = "b", marker = "o", linestyle = "None")
+    axs[1].set_ylabel("Error (m/s)")
+    axs[1].set_xlabel("$t$ (sec)")
+    
+    return axs
+
+
     #### END SOLUTION ####
 
 
@@ -154,7 +173,21 @@ def hail_Vzplot(t, V, z, method='numerical'):
         axs (array of Axes): handle to the Axes objects that comprise the figure's subplots
     """
     #### BEGIN SOLUTION ####
-    raise NotImplementedError("Implement hail_Vzplot")
+    
+    # create a subplots instance, 2 rows 1 col.
+    fig, axs = plt.subplots(2, 1, sharex=True)
+    
+    # plot velocity and altitude (z) against time.
+    axs[0].plot(t, V, color = "b", marker = "o", label = str(method), linestyle = "None")
+    axs[0].set_ylabel("$V$ (m/s)")
+    axs[0].legend(loc = "lower right")
+    
+    axs[1].plot(t, z, color = "b", marker = "o", linestyle = "None")
+    axs[1].set_ylabel("$z$ (m)")
+    axs[1].set_xlabel("$t$ (sec)")
+    
+    return axs
+
     #### END SOLUTION ####
 
 

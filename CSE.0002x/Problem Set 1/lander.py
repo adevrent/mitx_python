@@ -1,7 +1,7 @@
 ################################################################################
 # CSE.0002x
 # Problem Set 1: lander
-# Name:
+# Name: Atakan Devrent
 
 import math
 import matplotlib.pyplot as plt
@@ -28,7 +28,7 @@ class LanderIVP(IVP):
             f (float list): current forcing
         """
         #### BEGIN SOLUTION ####
-        raise NotImplementedError("Implement evalf for LanderIVP")
+        param = self.atmosphere(z)
         #### END SOLUTION ####
 
     def atmosphere(self, z):
