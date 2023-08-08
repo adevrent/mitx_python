@@ -65,7 +65,7 @@ def myGE_vec(K, f):
     A[:,n] = f
 
     # Elimination of nonzero elements below the diagonal
-    for i in range(n):
+    for i in range(n):  # on row i
         assert A[i,i] != 0.0, "Zero pivot detected"
 
         # Calculate Li which is the vector of all Lji values (for all values of j)
