@@ -65,18 +65,18 @@ def myGE_vec(K, f):
     A[:,n] = f
 
     # Elimination of nonzero elements below the diagonal
-    for i in range(n):  # on row i
+    for i in range(n):  # for each ROW i:
         assert A[i,i] != 0.0, "Zero pivot detected"
 
         # Calculate Li which is the vector of all Lji values (for all values of j)
         # TODO
-        raise NotImplementedError("Vectorized calculation of Li not implemented")
-
+        Li = A[:, i] / A[i, i]
+        
         # Update A[i+1:n,i+1:]
         # Hint: consider using an outer product of Li and the relevant
         #       portion of the A matrix (np.outer is the NumPy command)
         # TODO
-        raise NotImplementedError("Vectorized update of A[i+1:n,i+1:] not implemented")
+        Li_rowvector = Li.reshape(1, )
 
 
     # Back substitution
