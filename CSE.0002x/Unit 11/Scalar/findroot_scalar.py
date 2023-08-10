@@ -133,7 +133,7 @@ def findroot_Newton(calc_r, calc_drdx, x0, n, eps=None, ax=None):
             n (int): number of iterations to take
             
             eps (float): if provided, use finite difference with a step size of 
-            eps to calculate drdx (instead of calc_drdx)
+            eps to calculate drdx (instead of calc_drdx) with finite difference method
             
             ax (matplotlib pyplot Axes object reference): if provided,
             the plot the locations in the xk, r(xk) plane for each
@@ -144,7 +144,7 @@ def findroot_Newton(calc_r, calc_drdx, x0, n, eps=None, ax=None):
 
         """
     
-    def fd_drdx(xk):
+    def fd_drdx(xk):  # Approximate the derivative with finite difference (fd) method.
         return (calc_r(xk+eps)-calc_r(xk-eps))/(2*eps)
     
     if (eps is not None):
