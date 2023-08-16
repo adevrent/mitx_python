@@ -1,7 +1,7 @@
 ################################################################################
 # CSE.0002x
 # Problem Set 2: mynonlinsolver
-# edX Username:
+# edX Username: adevrent
 
 """
 This Python library implements Newton's method to solve a nonlinear
