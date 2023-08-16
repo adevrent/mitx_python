@@ -1,7 +1,7 @@
 ################################################################################
 # CSE.0002x
 # Problem Set 2: solve_robertson
-# edX Username:
+# edX Username: adevrent
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -198,8 +198,19 @@ def plot_Y(t, u, ptitle='Y vs t'):
             that comprise the figure
     """
     #### BEGIN SOLUTION #####
-    fig, axs = plt.subplots(3, 1)
-    axs[0].plot(t, u[0], color = "blue")
+    fig, axs = plt.subplots(3, 1, sharex=True)
+    for i in range(len(axs)):
+        if i == 1:
+            axs[i].set_ylim([0., 4.0E-5])
+        else:
+            axs[i].set_ylim([0., 1.])
+        axs[i].plot(t, u[:, i], color = "blue")
+        axs[i].set_ylabel(f"$Y_{i}$")
+        axs[i].grid()
+    axs[i].set_xlabel("$t$ (s)")
+    axs[0].set_title(ptitle)
+    
+    return fig, axs
     
     #### END SOLUTION #####
 
@@ -257,7 +268,7 @@ def run_robertson(mname='FE', dt=1.0e-4):
 def run_robertson_FE_stable():
     #### BEGIN SOLUTION #####
     # Adjust the Foward Euler timestep upward until just stable
-    return run_robertson(mname='FE', dt=1.0e-4)
+    return run_robertson(mname='FE', dt=3.52e-4)
     #### END SOLUTION #####
 
 
@@ -269,7 +280,7 @@ if __name__ == '__main__':
     time_FE = run_robertson_FE_stable()
 
     # Uncomment once Backward Euler is implemented
-    # time_BE = run_robertson(mname='BE', dt=1.0e0)
-    # print(f"Ratio of FE/BE compute time = {time_FE/time_BE:.1f}")
+    time_BE = run_robertson(mname='BE', dt=1.0e0)
+    print(f"Ratio of FE/BE compute time = {time_FE/time_BE:.1f}")
 
     plt.show()

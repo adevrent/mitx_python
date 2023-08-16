@@ -175,7 +175,7 @@ def step_BE(thisIVP, dt, un, tn):
 
     # Use Newton's method to determine un1
     #### BEGIN SOLUTION #####
-    raise NotImplementedError("Use Newton's method to solve a single step of Backward Euler")
+    un1 = myNewton(un, evalr, evalr_u)
     #### END SOLUTION ####
     return un1
 

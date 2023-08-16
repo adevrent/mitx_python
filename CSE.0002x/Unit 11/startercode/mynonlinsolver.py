@@ -28,7 +28,10 @@ def myNewton(u0, evalr, evalr_u, numNewton=10):
     for k in range(numNewton):
         # Note: you may use np.linalg.solve to solve the linear system
         #### BEGIN SOLUTION #####
-        raise NotImplementedError("Update the uNewton state for a single step of Newton's method")
+        K = evalr_u(uNewton)
+        b = -evalr(uNewton)
+        x = np.linalg.solve(K, b)
+        uNewton = x + uNewton
         #### END SOLUTION #####
     return uNewton
 
