@@ -199,6 +199,7 @@ def plot_Y(t, u, ptitle='Y vs t'):
     """
     #### BEGIN SOLUTION #####
     fig, axs = plt.subplots(3, 1)
+    axs[0].plot(t, u[0], color = "blue")
     
     #### END SOLUTION #####
 
