@@ -73,13 +73,42 @@ class RobertsonIVP(IVP):
         # Calculate f if requested
         if calc_f:
             #### BEGIN SOLUTION #####
-            raise NotImplementedError("Calculate f vector for RobertsonIVP")
+            f0 = -k0*u[0] + k2*u[1]*u[2]
+            f1 = k0*u[0] - k1*(u[1]**2) - k2*u[1]*u[2]
+            f2 = k1*(u[1]**2)
+            
+            f = np.array([f0, f1, f2])
             #### END SOLUTION #####
 
         # Calculate Jacobian df/du if requested
         if calc_Jacobian:
             #### BEGIN SOLUTION #####
-            raise NotImplementedError("Calculate Jacobian df/du for RobertsonIVP")
+            j00 = -k0
+            j10 = k0
+            j20 = 0
+            
+            j01 = k2*u[2]
+            j11 = -2*k1*u[1] - k2*u[2]
+            j21 = 2*k1*u[1]
+            
+            j02 = k2*u[1]
+            j12 = -k2*u[1]
+            j22 = 0
+            
+            J = np.zeros((3, 3))
+            J[0, 0] = j00
+            J[1, 0] = j10
+            J[2, 0] = j20
+            
+            J[0, 1] = j01
+            J[1, 1] = j11
+            J[2, 1] = j21
+            
+            J[0, 2] = j02
+            J[1, 2] = j12
+            J[2, 2] = j22
+            
+            f_u = J
             #### END SOLUTION #####
 
         if calc_f and calc_Jacobian:
@@ -119,8 +148,10 @@ def test_calc_all():
         [ 0.000000e+00,  3.000000e+06,  0.000000e+00] ])
 
     #### BEGIN SOLUTION #####
-    raise NotImplementedError("Instantiate a RobertsonIVP with parameters listed in the pset, "
-                              "and use it to calculate f and f_u at the specified state u")
+    uI = np.array([1.0, 0.0, 0.0])
+    p = {"k0":4.0e-2, "k1":3.0e7, "k2":1.0e4}
+    robertson_ivp = RobertsonIVP(uI, 0, 400, p)
+    f, f_u = robertson_ivp.calc_all(u, True, True)
     #### END SOLUTION #####
 
     # Check correctness and print a message
@@ -167,7 +198,8 @@ def plot_Y(t, u, ptitle='Y vs t'):
             that comprise the figure
     """
     #### BEGIN SOLUTION #####
-    raise NotImplementedError("Plot Y proportions for a given run of a RobertsonIVP")
+    fig, axs = plt.subplots(3, 1)
+    
     #### END SOLUTION #####
 
 
@@ -233,7 +265,7 @@ if __name__ == '__main__':
     test_calc_all()
 
     # Uncomment once calc_all and test_calc_all are implemented and working
-    # time_FE = run_robertson_FE_stable()
+    time_FE = run_robertson_FE_stable()
 
     # Uncomment once Backward Euler is implemented
     # time_BE = run_robertson(mname='BE', dt=1.0e0)
