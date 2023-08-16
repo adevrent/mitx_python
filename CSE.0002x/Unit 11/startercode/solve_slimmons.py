@@ -172,7 +172,8 @@ if __name__ == '__main__':
     plotdict['mapper'] = mapper
 
     # Construct IVP to solve equilibrium problem
-    slimmonsIVP_eq = HVACIVP('slimmons.csv', uI, tI, tF, p)
+    # slimmonsIVP_eq = HVACIVP('slimmons.csv', uI, tI, tF, p)
+    slimmonsIVP_eq = HVACIVP('/home/sscf/mitx_python/CSE.0002x/Unit 11/startercode/slimmons.csv', uI, tI, tF, p)
 
     # Solve for equilibrium condition using default linear solver (np.linalg.solve)
     print("Using default linear solver to find equilibrium condition")

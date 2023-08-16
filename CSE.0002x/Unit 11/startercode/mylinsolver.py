@@ -1,7 +1,7 @@
 ################################################################################
 # CSE.0002x
 # Problem Set 2: mylinsolver
-# edX Username:
+# edX Username: adevrent
 
 """
 This Python library implements Gaussian elimination to solve Ku=f, where:
@@ -66,14 +66,16 @@ def myGE_vec(K, f):
 
         # Calculate Li which is the vector of all Lji values (for all values of j)
         #### BEGIN SOLUTION #####
-        raise NotImplementedError("Calculate row multipliers for Gaussian elimination")
+        Li = A[i+1:, i] / A[i, i]  # multiplier for row i. We need to update 
+                                # A[j, :] = A[j, :] - A[i, :] * Li[j] for all rows j >= i+1
+        # Li is COLUMN vector!
         #### END SOLUTION ####
 
         # Update A[i+1:, i+1:]
         # Hint: consider using an outer product of Li and the relevant
         #       portion of the A matrix (np.outer is the NumPy function)
         #### BEGIN SOLUTION #####
-        raise NotImplementedError("Update remaining A matrix for Gaussian elimination")
+        A[i+1:n, i:] -= np.outer(Li, A[i, i:])
         #### END SOLUTION ####
 
     # Back substitution
@@ -82,7 +84,7 @@ def myGE_vec(K, f):
         # Calculate u[i]
         # Hint: the np.dot function will be useful
         #### BEGIN SOLUTION #####
-        raise NotImplementedError("Perform back substitution in Gaussian elimination")
+        u[i] = (A[n-2, n] - A[n-2, n-1]*u[i+1]) / A[n-2, n-2]
         #### END SOLUTION #####
 
     return u
