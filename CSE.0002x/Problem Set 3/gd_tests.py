@@ -42,7 +42,20 @@ def J1(xv, pdict):
         J1prime (1D numpy array): gradient of J1 at xv
     """
     #### BEGIN SOLUTION ####
-    raise NotImplementedError("Calculate J1 and its gradient at a given state xv")
+    xu = pdict["user"][0]
+    yu = pdict["user"][1]
+    x = xv[0]
+    y = xv[1]
+    
+    J1 = (-1)/(1 + (x-xu)**2 + (y-yu)**2)
+    
+    J1prime = np.zeros(2)
+    J1prime[0] = (2*(x-xu)) / (1 + (x-xu)**2 + (y-yu)**2)**2
+    J1prime[1] = (2*(y-yu)) / (1 + (x-xu)**2 + (y-yu)**2)**2
+    
+    return J1, J1prime
+    
+    
     #### END SOLUTION ####
 
 
@@ -67,6 +80,7 @@ def run_test1():
     xhist, Jhist = gd.gradient_descent(J1, xstart, alpha, nStop, verbose=True, pdict=pdict)
     print(f"In run_test1: (xopt, yopt) = ({xhist[-1,0]:.2e}, {xhist[-1,1]:.2e}), Jmin = {Jhist[-1]:.2e}")
 
+
     # Set up linearly spaced points in x and y for evaluating objective function
     Nx = 101
     Ny = 101
@@ -75,15 +89,35 @@ def run_test1():
     f = np.zeros((Nx, Ny))
 
     #### BEGIN SOLUTION ####
-    raise NotImplementedError("Calculate J1 at all (x, y) in bx, by; save into f")
-    raise NotImplementedError("Plot contours of J1") # this is where you assign axs and cs
-    raise NotImplementedError("Plot xhist markers on top of J1's contours")
+    # Calculate J1 at all (x, y) in bx, by; save into f.
+    a = 0
+    b = 0
+    for j in range(len(bx)):
+        for i in range(len(by)):
+            xv = np.array([bx[j], by[i]])
+            f[i, j] = J1(xv, pdict)[0]  # row is y, col is x. J1[0] is the value of J(x, y).
+    
+    # plot
+    cs, axs = plt.subplots()
+    Cf = axs.contour(bx, by, f)
+    axs.clabel(Cf)
+    axs.axis("equal")
+    axs.axis("square")
+    axs.grid(True)
+    axs.set_xlabel("x")
+    axs.set_ylabel("y")
+    ticklist = np.arange(-1, 1.25, 0.25)
+    axs.set_xticks(ticklist)
+    axs.set_yticks(ticklist)
+    
+    axs.plot(xhist[:-1, 0], xhist[:-1, 1], "go")
+    axs.plot(xhist[-1, 0], xhist[-1, 1], "mo")
     #### END SOLUTION ####
 
     return axs, cs
 
 
 if __name__ == '__main__':
-    run_test0()
-    # run_test1()
+    #run_test0()
+    run_test1()
     plt.show()

@@ -50,7 +50,22 @@ def gradient_descent(Jfunc, xstart, alpha, nStop, verbose=False, pdict=None):
     # Perform nStop steps of steepest descent
     for n in range(1, nStop+1):
         #### BEGIN SOLUTION ####
-        raise NotImplementedError("Implement the gradient descent loop, with printouts if verbose")
+        x -= alpha * Jprime
+        if pdict is None:
+            J, Jprime = Jfunc(x)
+        else:
+            J, Jprime = Jfunc(x, pdict)
+        
+        dJ = J - Jhist[n-1]  # calculate dJ
+        dx = x - xhist[n-1, :]  # calculate dx
+        max_dx = dx.max()  # find max value in dx
+        max_dx_idx = dx.argmax()
+        
+        xhist[n, :] = x  # update x
+        Jhist[n] = J  # update J(x)
+        
+        if verbose:
+            print(f"Iter={n}: J = {J:.2e}, dJ = {dJ:.2e}, max dx = {max_dx:.2e} for state i={max_dx_idx}")
         #### END SOLUTION ####
 
     return xhist, Jhist
