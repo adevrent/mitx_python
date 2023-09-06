@@ -103,8 +103,8 @@ def plot_objfun_onebase(axs, pdict, Nx=101, Ny=101):
     plot_users(axs, users)
 
     #### BEGIN SOLUTION ####
-    raise NotImplementedError("Plot contours of the objective function "
-                              "for the location of a single base")
+    # Plot contours of the objective function for the location of a single base
+    
     #### END SOLUTION ####
 
 
