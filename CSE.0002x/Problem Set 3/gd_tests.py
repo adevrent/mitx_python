@@ -90,18 +90,16 @@ def run_test1():
 
     #### BEGIN SOLUTION ####
     # Calculate J1 at all (x, y) in bx, by; save into f.
-    a = 0
-    b = 0
     for j in range(len(bx)):
         for i in range(len(by)):
             xv = np.array([bx[j], by[i]])
             f[i, j] = J1(xv, pdict)[0]  # row is y, col is x. J1[0] is the value of J(x, y).
     
     # plot
-    cs, axs = plt.subplots()
-    Cf = axs.contour(bx, by, f)
-    axs.clabel(Cf)
-    axs.axis("equal")
+    fig, axs = plt.subplots()
+    cs = axs.contour(bx, by, f)
+    axs.clabel(cs)
+    axs.set_aspect("equal")
     axs.axis("square")
     axs.grid(True)
     axs.set_xlabel("x")

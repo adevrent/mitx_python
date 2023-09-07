@@ -104,6 +104,43 @@ def plot_objfun_onebase(axs, pdict, Nx=101, Ny=101):
 
     #### BEGIN SOLUTION ####
     # Plot contours of the objective function for the location of a single base
+    xmax = users[:, 0].max()
+    xmin = users[:, 0].min()
+    ymax = users[:, 1].max()
+    ymin = users[:, 1].min()
+    
+    Lx = xmax - xmin
+    Ly = ymax - ymin
+    
+    x0 = xmin - 0.1*Lx
+    x1 = xmax + 0.1*Lx
+    y0 = ymin - 0.1*Ly
+    y1 = ymax + 0.1*Ly
+    
+    # Set up linearly spaced points in x and y for evaluating objective function
+    bx = np.linspace(x0, x1, Nx)
+    by = np.linspace(y0, y1, Ny)
+    f = np.zeros((Nx, Ny))
+
+    #### BEGIN SOLUTION ####
+    # Calculate J1 at all (x, y) in bx, by; save into f.
+    for j in range(len(bx)):
+        for i in range(len(by)):
+            xv = np.array([bx[j], by[i]])
+            f[i, j] = calc_objfun(xv, pdict)[0]  # row is y, col is x. J1[0] is the value of J(x, y).
+    
+    minf = f.min()
+    minf_index = np.unravel_index(np.argmin(f), f.shape)
+    minf_x = bx[minf_index[1]]
+    minf_y = by[minf_index[0]]
+    
+    axs.set_xlim((x0, x1))
+    axs.set_ylim((y0, y1))
+    cs = axs.contour(bx, by, f, 7)
+    axs.clabel(cs)
+    title = f"min f = {minf:.2e} at ({minf_x:.2e}, {minf_y:.2e})"
+    axs.set_title(title)
+    axs.plot(minf_x, minf_y, "r*")
     
     #### END SOLUTION ####
 
@@ -191,12 +228,12 @@ def optimize_bases123(users, alpha=0.1, nStop=10):
 
 def my_alpha():
     #### BEGIN SOLUTION ####
-    return 0.1
+    return 0.5
     #### END SOLUTION ####
 
 def my_nStop():
     #### BEGIN SOLUTION ####
-    return 10
+    return 50
     #### END SOLUTION ####
 
 
@@ -229,12 +266,12 @@ if __name__== '__main__':
         [-0.80, -0.40]])
 
     # Use this line to test plot_objfun_onebase
-    optimize_bases123(users_T)
+    # optimize_bases123(users_T)
 
     # Use this line to run gradient descent with custom values of alpha and nStop
     # optimize_bases123(users_T, alpha=my_alpha(), nStop=my_nStop())
 
     # Use this line to find optimum locations of cell towers on campus
-    # optimize_bases123(users_UG, alpha=my_alpha(), nStop=my_nStop())
+    optimize_bases123(users_UG, alpha=my_alpha(), nStop=my_nStop())
 
     plt.show()
