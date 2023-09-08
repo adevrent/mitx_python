@@ -142,6 +142,8 @@ def plot_objfun_onebase(axs, pdict, Nx=101, Ny=101):
     axs.set_title(title)
     axs.plot(minf_x, minf_y, "r*")
     
+    return cs
+    
     #### END SOLUTION ####
 
 
