@@ -108,8 +108,8 @@ def run_test1():
     axs.set_xticks(ticklist)
     axs.set_yticks(ticklist)
     
-    axs.plot(xhist[:-1, 0], xhist[:-1, 1], color = "green", marker = "o")
-    axs.plot(xhist[-1, 0], xhist[-1, 1], color = "magenta", marker = "o")
+    axs.plot(xhist[:-1, 0], xhist[:-1, 1], color = "green", marker = "o", linestyle="")
+    axs.plot(xhist[-1, 0], xhist[-1, 1], color = "magenta", marker = "o", linestyle="")
     #### END SOLUTION ####
 
     return axs, cs
