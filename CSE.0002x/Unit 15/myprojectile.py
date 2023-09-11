@@ -65,7 +65,7 @@ print("Expected value (mean) of xf =", mean)
 # Plot histogram
 fig, ax = plt.subplots()
 fig.set_size_inches(10, 8)
-fig.text(0.1, 0, f"Distribution of $x_f$ for triangular distribution of $V_0$ and $\Theta_0$ using a Monte Carlo simulation with an $N=${N:.2E} sample size.", fontsize="large")
+fig.text(0.05, 0.002, f"Distribution of $x_f$ for triangular distribution of $V_0$ and $\Theta_0$ using a Monte Carlo simulation with an $N=${N:.2E} sample size.", fontsize="large")
 ax.hist(xf, bins=200, density=True)
 ax.set_title("Probability density of impact location $x_f$")
 ax.set_xlabel("$x_f$")
