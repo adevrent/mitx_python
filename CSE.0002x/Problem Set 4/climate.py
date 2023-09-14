@@ -311,7 +311,25 @@ def PHC_growth(cIVP, t, tgrowth=60):
         NumPy ndarray containing production rate of [H20, CO2]
     """
     #### BEGIN SOLUTION #####
-    raise NotImplementedError("Implement the production rate function in PHC_growth")
+    
+    PH0      = cIVP.get_p('PH0')
+    PC0      = cIVP.get_p('PC0')
+    
+    if t <= tgrowth:
+        H20_growth = t * (2*PH0)/tgrowth
+        H20 = PH0 + H20_growth
+        
+        CO2_growth = t * (2*PC0)/tgrowth
+        CO2 = PC0 + CO2_growth
+    else:
+        H20 = 3 * PH0
+        CO2 = 3 * PC0
+    
+    prod_rate = np.array((H20, CO2))  # array of the production rate at t
+    
+    return prod_rate
+    
+    
     #### END SOLUTION #####
 
 
@@ -338,7 +356,22 @@ def PHC_decline(cIVP, t, tdecline=10):
         NumPy ndarray containing production rate of [H20, CO2]
     """
     #### BEGIN SOLUTION #####
-    raise NotImplementedError("Implement the production rate function in PHC_decline")
+    PH0      = cIVP.get_p('PH0')
+    PC0      = cIVP.get_p('PC0')
+    
+    if t <= tdecline:
+        H20_decline = t * (0.5*PH0)/tdecline
+        H20 = PH0 - H20_decline
+        
+        CO2_decline = t * (0.5*PC0)/tdecline
+        CO2 = PC0 - CO2_decline
+    else:
+        H20 = 0.5 * PH0
+        CO2 = 0.5 * PC0
+    
+    prod_rate = np.array((H20, CO2))  # array of the production rate at t
+    
+    return prod_rate
     #### END SOLUTION #####
 
 
@@ -371,7 +404,10 @@ def run_climate_nominal(PHC_scenario, scenario_title):
     plot_THC(t, u, title=scenario_title)
 
     #### BEGIN SOLUTION #####
-    raise NotImplementedError("Determine and print the maximum temperature rise")
+    dTmax = u[:, 0].max() - u[0, 0]
+    print(f"dTmax = {dTmax.round(2)} degrees K")
+    
+    return dTmax
     #### END SOLUTION #####
 
 
@@ -402,8 +438,29 @@ def sample_climate_results(PHC_scenario, scenario_title, Nsample):
         within the entire sample.
     """
     #### BEGIN SOLUTION #####
-    raise NotImplementedError("Implement a Monte Carlo simulation of the climate model "
-                              "and plot a histogram of the max temperature rise outcomes")
+    rng = np.random.default_rng()
+    C = rng.triangular(1.5 * 10**8, 4.5 * 10**8, 7.5 * 10**8, Nsample)  # J/(K m^2)
+    tauH = rng.triangular(7.0, 9.0, 11.0, Nsample)  # days
+    tauC = rng.triangular(30.0, 60.0, 90.0, Nsample)  # years
+    
+    dTmax = np.zeros(Nsample)
+    for i in range(Nsample):  # loop over sample size, NOT time
+        C_temp = C[i]
+        tauH_temp = tauH[i]
+        tauC_temp = tauC[i]
+
+        t, u, PHC = run_climate_case(C_temp, tauH_temp, tauC_temp, PHC_scenario)
+        # PH_temp = PHC[:, 0]
+        # PC_temp = PHC[:, 1]
+        dTmax[i] = u[:, 0].max() - u[0, 0]
+    
+    fighist, axhist = plt.subplots()
+    histbins = axhist.hist(dTmax, density=True)
+    axhist.set_title(f"{scenario_title}, Nsample = {Nsample}")
+    axhist.set_ylabel("PDF")
+    axhist.set_xlabel("$\Delta T$ max (K)")
+    
+    return C, tauH, tauC, dTmax, fighist, axhist, histbins
     #### END SOLUTION #####
 
 
@@ -419,7 +476,13 @@ def calc_percentiles(dTmax):
         * the 95th-percentile value of the dTmax data
     """
     #### BEGIN SOLUTION #####
-    raise NotImplementedError("Report 5%, 50%, and 95% percentile of max temperature rise")
+    perc_5th, perc_50th, perc_95th = np.percentile(dTmax, [5, 50, 95])
+    
+    print(f"dTmax   5%: {perc_5th.round(2)} K")
+    print(f"dTmax  50%: {perc_50th.round(2)} K")
+    print(f"dTmax  95%: {perc_95th.round(2)} K")
+    
+    return perc_5th, perc_50th, perc_95th
     #### END SOLUTION #####
 
 
@@ -435,7 +498,17 @@ def calc_mean_temp_rise_CI(dTmax):
         * the upper end of the 95% confidence interval on the mean
     """
     #### BEGIN SOLUTION #####
-    raise NotImplementedError("Report mean max temperature rise and its 95% confidence interval")
+    sample_mean = dTmax.mean()
+    # Let Theta a random variable which is an estimation of the true sample mean.
+    Theta_stdev = dTmax.std() / np.sqrt(len(dTmax))
+    
+    lower_end_95 = sample_mean - (1.96 * Theta_stdev)
+    higher_end_95 = sample_mean + (1.96 * Theta_stdev)
+    
+    print(f"dTmax mean: {sample_mean.round(2)} with 95% C.I. = [{lower_end_95.round(2)}, {higher_end_95.round(2)}]")
+    
+    return sample_mean, lower_end_95, higher_end_95
+    
     #### END SOLUTION #####
 
 
@@ -451,7 +524,10 @@ def calc_threshold_probability_CI(dTmax):
         * the upper end of the 95% confidence interval on the probability
     """
     #### BEGIN SOLUTION #####
-    raise NotImplementedError("Report probability max temperature is < 0.5 K and its 95% confidence interval")
+    lt_05 = np.count_nonzero(np.logical_and(lt_05 < 0.5, True))
+    sample_probability = lt_05 / len(dTmax)
+    
+    return sample_probability, 
     #### END SOLUTION #####
 
 
@@ -511,22 +587,22 @@ if __name__ == '__main__':
         pass
     print()
 
-    # try:
-    #     run_climate_nominal(PHC_decline, 'Decline scenario')
-    # except NotImplementedError:
-    #     pass
-    # print()
+    try:
+        run_climate_nominal(PHC_decline, 'Decline scenario')
+    except NotImplementedError:
+        pass
+    print()
 
-    # try:
-    #     run_climate_MC(PHC_growth, 'Growth scenario', 100)
-    # except NotImplementedError:
-    #     pass
-    # print()
+    try:
+        run_climate_MC(PHC_growth, 'Growth scenario', 100)
+    except NotImplementedError:
+        pass
+    print()
 
-    # try:
-    #     run_climate_MC(PHC_decline, 'Decline scenario', 100)
-    # except NotImplementedError:
-    #     pass
-    # print()
+    try:
+        run_climate_MC(PHC_decline, 'Decline scenario', 100)
+    except NotImplementedError:
+        pass
+    print()
 
     plt.show()
