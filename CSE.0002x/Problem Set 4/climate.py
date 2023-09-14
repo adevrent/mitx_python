@@ -524,10 +524,16 @@ def calc_threshold_probability_CI(dTmax):
         * the upper end of the 95% confidence interval on the probability
     """
     #### BEGIN SOLUTION #####
-    lt_05 = np.count_nonzero(np.logical_and(lt_05 < 0.5, True))
+    lt_05 = np.count_nonzero(np.logical_and(dTmax < 0.5, True))
     sample_probability = lt_05 / len(dTmax)
+    # TODO Theta_stdev = 
     
-    return sample_probability, 
+    lower_95 = sample_probability - (1.96 * Theta_stdev)
+    upper_95 = sample_probability + (1.96 * Theta_stdev)
+    
+    print(f"P(dTmax < 0.5 K) = {np.round(sample_probability, 3)} with 95% C.I. = [{np.round(lower_95, 3)}, {np.round(upper_95, 3)}]")
+    
+    return sample_probability, lower_95, upper_95
     #### END SOLUTION #####
 
 
