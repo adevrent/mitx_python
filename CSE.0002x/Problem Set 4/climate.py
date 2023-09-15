@@ -505,7 +505,7 @@ def calc_mean_temp_rise_CI(dTmax):
     lower_end_95 = sample_mean - (1.96 * Theta_stdev)
     higher_end_95 = sample_mean + (1.96 * Theta_stdev)
     
-    print(f"dTmax mean: {sample_mean:.2f} with 95% C.I. = [{lower_end_95:.2f}, {higher_end_95:.2f}]")
+    print(f"dTmax mean: {sample_mean:.2f} K with 95% C.I. = [{lower_end_95:.2f}, {higher_end_95:.2f}]")
     
     return sample_mean, lower_end_95, higher_end_95
     
