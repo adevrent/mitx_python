@@ -500,7 +500,7 @@ def calc_mean_temp_rise_CI(dTmax):
     #### BEGIN SOLUTION #####
     sample_mean = dTmax.mean()
     # Let Theta a random variable which is an estimation of the true sample mean.
-    Theta_stdev = dTmax.std() / np.sqrt(len(dTmax))
+    Theta_stdev = dTmax.std(ddof=1) / np.sqrt(len(dTmax))  # changed ddof=1
     
     lower_end_95 = sample_mean - (1.96 * Theta_stdev)
     higher_end_95 = sample_mean + (1.96 * Theta_stdev)
