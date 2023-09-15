@@ -405,7 +405,7 @@ def run_climate_nominal(PHC_scenario, scenario_title):
 
     #### BEGIN SOLUTION #####
     dTmax = u[:, 0].max() - u[0, 0]
-    print(f"dTmax = {dTmax.round(2)} degrees K")
+    print(f"dTmax = {dTmax:.2f} degrees K")
     
     return dTmax
     #### END SOLUTION #####
@@ -478,9 +478,9 @@ def calc_percentiles(dTmax):
     #### BEGIN SOLUTION #####
     perc_5th, perc_50th, perc_95th = np.percentile(dTmax, [5, 50, 95])
     
-    print(f"dTmax   5%: {perc_5th.round(2)} K")
-    print(f"dTmax  50%: {perc_50th.round(2)} K")
-    print(f"dTmax  95%: {perc_95th.round(2)} K")
+    print(f"dTmax   5%: {perc_5th:.2f} K")
+    print(f"dTmax  50%: {perc_50th:.2f} K")
+    print(f"dTmax  95%: {perc_95th:.2f} K")
     
     return perc_5th, perc_50th, perc_95th
     #### END SOLUTION #####
@@ -505,7 +505,7 @@ def calc_mean_temp_rise_CI(dTmax):
     lower_end_95 = sample_mean - (1.96 * Theta_stdev)
     higher_end_95 = sample_mean + (1.96 * Theta_stdev)
     
-    print(f"dTmax mean: {sample_mean.round(2)} with 95% C.I. = [{lower_end_95.round(2)}, {higher_end_95.round(2)}]")
+    print(f"dTmax mean: {sample_mean:.2f} with 95% C.I. = [{lower_end_95:.2f}, {higher_end_95:.2f}]")
     
     return sample_mean, lower_end_95, higher_end_95
     
