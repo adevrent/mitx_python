@@ -526,12 +526,12 @@ def calc_threshold_probability_CI(dTmax):
     #### BEGIN SOLUTION #####
     lt_05 = np.count_nonzero(np.logical_and(dTmax < 0.5, True))
     sample_probability = lt_05 / len(dTmax)
-    # TODO Theta_stdev = 
+    Theta_stdev = np.sqrt(sample_probability * (1 - sample_probability)) / np.sqrt(len(dTmax))
     
     lower_95 = sample_probability - (1.96 * Theta_stdev)
     upper_95 = sample_probability + (1.96 * Theta_stdev)
     
-    print(f"P(dTmax < 0.5 K) = {np.round(sample_probability, 3)} with 95% C.I. = [{np.round(lower_95, 3)}, {np.round(upper_95, 3)}]")
+    print(f"P(dTmax < 0.5 K) = {sample_probability:.3f} with 95% C.I. = [{lower_95:.3f}, {upper_95:.3f}]")
     
     return sample_probability, lower_95, upper_95
     #### END SOLUTION #####
