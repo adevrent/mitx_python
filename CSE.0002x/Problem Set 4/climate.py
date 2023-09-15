@@ -556,7 +556,31 @@ def plot_threshold_variability(C, tauH, tauC, dTmax, scenario_title):
         axsscat: the array of Axes objects in which the scatter plots are drawn
     """
     #### BEGIN SOLUTION #####
-    raise NotImplementedError("Create scatter plots of C, tauH, and tauC")
+    lt_05_indices = np.where(dTmax < 0.5)
+    gt_05_indices = np.where(dTmax >= 0.5)
+    
+    # print("lt_05_indices:", lt_05_indices)
+    # print("gt_05_indices:", gt_05_indices)
+    
+    figscat, axsscat = plt.subplots(3, 1, figsize=(10, 6))
+    
+    axsscat[0].scatter(C[lt_05_indices], tauH[lt_05_indices], c="blue", marker="*")
+    axsscat[0].scatter(C[gt_05_indices], tauH[gt_05_indices], c="red", marker="*")
+    axsscat[0].set_xlabel("C (J/(m^2 K))")
+    axsscat[0].set_ylabel("tauH (days)")
+    axsscat[0].set_title(scenario_title)
+    
+    axsscat[1].scatter(C[lt_05_indices], tauC[lt_05_indices], c="blue", marker="*")
+    axsscat[1].scatter(C[gt_05_indices], tauC[gt_05_indices], c="red", marker="*")
+    axsscat[1].set_xlabel("C (J/(m^2 K))")
+    axsscat[1].set_ylabel("tauC (yrs)")
+    
+    axsscat[2].scatter(tauC[lt_05_indices], tauH[lt_05_indices], c="blue", marker="*")
+    axsscat[2].scatter(tauC[gt_05_indices], tauH[gt_05_indices], c="red", marker="*")
+    axsscat[2].set_xlabel("tauC (yrs)")
+    axsscat[2].set_ylabel("tauH (days)")
+    
+    return figscat, axsscat
     #### END SOLUTION #####
 
 
