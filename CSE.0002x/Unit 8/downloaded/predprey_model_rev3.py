@@ -42,6 +42,3 @@ class PredPreyIVP(IVP):
         ff = -m*fu + c*b*ru*fu
             
         return [fr, ff]
-
-
-

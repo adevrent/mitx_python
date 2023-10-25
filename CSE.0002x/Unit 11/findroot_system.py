@@ -120,6 +120,4 @@ if __name__ == "__main__":
 
     print()
     print("Running Newton")
-    findroot_Newton(calcr, calcdrdx, [1.5, 1.5], 6, ax=ax)    
-
-
+    findroot_Newton(calcr, calcdrdx, [1.5, 1.5], 6, ax=ax)
