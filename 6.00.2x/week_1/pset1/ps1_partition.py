@@ -21,5 +21,11 @@ def get_partitions(set_):
 ### Uncomment the following code  and run this file
 ### to see what get_partitions does if you want to visualize it:
 
-#for item in (get_partitions(['a','b','c','d'])):
+# for item in (get_partitions(['a','b','c','d'])):
 #     print(item)
+
+# mydict = {"a":1, "c":25, "e":3, "d":4, "b":8}
+# for item in (get_partitions(mydict.items())):
+#     print(item)
+# total_partitions = [prt for prt in get_partitions(mydict.items())]
+# print(total_partitions)
