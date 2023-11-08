@@ -81,3 +81,10 @@ def simWalks(numSteps, numTrials, dClass):
     Simulates numTrials walks of numSteps steps each.
     Returns a list of the final distance for each trial"""
     Homer = dClass()
+    origin = Location(0, 0)
+    distances = []
+    for t in range(numTrials):
+        f = Field()
+        f.addDrunk(Homer, origin)
+        distances.append(round(walk(f, Homer, numSteps), 1))
+    return distances
